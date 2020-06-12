@@ -1,0 +1,72 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (6.0.3.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
+    backports (3.17.2)
+    concurrent-ruby (1.1.6)
+    ffi (1.9.25)
+    i18n (1.8.3)
+      concurrent-ruby (~> 1.0)
+    listen (3.1.5)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+      ruby_dep (~> 1.2)
+    minitest (5.14.1)
+    multi_json (1.14.1)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    mysql2 (0.5.2)
+    mysql2-cs-bind (0.0.6)
+      mysql2
+    rack (2.0.5)
+    rack-flash3 (1.0.5)
+      rack
+    rack-protection (2.0.8)
+      rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
+    rb-fsevent (0.10.3)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
+    rerun (0.13.0)
+      listen (~> 3.0)
+    ruby2_keywords (0.0.2)
+    ruby_dep (1.5.0)
+    sinatra (2.0.8)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.8)
+      tilt (~> 2.0)
+    sinatra-contrib (2.0.8)
+      backports (>= 2.8.2)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.0.8)
+      sinatra (= 2.0.8)
+      tilt (~> 2.0)
+    thread_safe (0.3.6)
+    tilt (2.0.10)
+    tzinfo (1.2.7)
+      thread_safe (~> 0.1)
+    zeitwerk (2.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activesupport
+  mysql2
+  mysql2-cs-bind
+  rack-flash3
+  rack-test
+  rerun
+  sinatra (= 2.0.8)
+  sinatra-contrib
+
+BUNDLED WITH
+   1.17.3

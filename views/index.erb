@@ -1,0 +1,43 @@
+<main role="main">
+    <%= erb :flash %>
+    <div class="page-content page-container" id="page-content">
+        <div class="container d-flex justify-content-center">
+            <div class="card">
+                <% if session[:user_id] %>
+                    <div class="publisher bt-1 border-light">
+                        <form id="form-comment" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <textarea class="form-control" name="text" id="text" rows="3" cols="50" placeholder="こんにちは"></textarea>
+                                    <div class="input-group-append">
+                                        <button id="btn-send" class="btn btn-primary">送信</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="file" class="form-control-file" name="file" id="file">
+                            </div>
+                        </form>
+                    </div>
+                <% end %>
+                <div class="ps-container ps-theme-default ps-active-y" id="chat-content">
+                    <% @comments.each do |c| %>
+                        <div class="media media-chat<% if session[:user_id] == c[:user_id] then %> media-chat-reverse<% end %>">
+                            <div class="media-body">
+                                <% if c[:text].present? %>
+                                  <p><%= h c[:text] %></p>
+                                <% end %>
+                                <% if c[:image_path].present? %>
+                                  <p><img src="<%= url(c[:image_path]) %>" alt="image"></p>
+                                <% end %>
+                                <p class="meta"><% if session[:user_id] == c[:user_id] then %>自分<% else %><%= h c[:user_name] %><% end %> <time><%= h c[:comment_created_at] %></time></p>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script type="text/javascript" src="js/index.js"></script>
