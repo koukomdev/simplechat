@@ -1,0 +1,137 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "VPC Template For Multi-AZ",
+  "Resources": {
+    "VPC": {
+      "Type"       : "AWS::EC2::VPC",
+      "Properties" : {
+        "CidrBlock"          : "10.0.0.0/16",
+        "InstanceTenancy"    : "default",
+        "EnableDnsSupport"   : "true",
+        "EnableDnsHostnames" : "false",
+        "Tags"               : [ { "Key": "Name", "Value": "SimplechatVPC" } ]
+      }
+    },
+    "eip": {
+      "Type"       : "AWS::EC2::EIP",
+      "Properties" : { "Domain" : "vpc" }
+    },
+    "subnetPub1": {
+      "Type"       : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock"        : "10.0.0.0/24",
+        "AvailabilityZone" : { "Fn::Select" : [ "0", { "Fn::GetAZs" : { "Ref" : "AWS::Region" }}]},
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Public-Subnet-1a" } ]
+      }
+    },
+    "subnetPub2": {
+      "Type"       : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock"        : "10.0.1.0/24",
+        "AvailabilityZone" : { "Fn::Select" : [ "1", { "Fn::GetAZs" : { "Ref" : "AWS::Region" }}]},
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Public-Subnet-2" } ]
+      }
+    },
+    "subnetPrv1": {
+      "Type"       : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock"        : "10.0.2.0/24",
+        "AvailabilityZone" : { "Fn::Select" : [ "0", { "Fn::GetAZs" : { "Ref" : "AWS::Region" }}]},
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Private-Subnet-1" } ]
+      }
+    },
+    "subnetPrv2": {
+      "Type"       : "AWS::EC2::Subnet",
+      "Properties" : {
+        "CidrBlock"        : "10.0.3.0/24",
+        "AvailabilityZone" : { "Fn::Select" : [ "1", { "Fn::GetAZs" : { "Ref" : "AWS::Region" }}]},
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Private-Subnet-2" } ]
+      }
+    },
+    "Nat": {
+      "Type"       : "AWS::EC2::NatGateway",
+      "Properties" : {
+        "AllocationId"     : { "Fn::GetAtt" : ["eip", "AllocationId"] },
+        "SubnetId"         : { "Ref" : "subnetPub1" }
+      },
+      "DependsOn"  : "eip"
+    },
+    "IGW": {
+      "Type"       : "AWS::EC2::InternetGateway",
+      "Properties" : {
+        "Tags"             : [ { "Key": "Name", "Value": "Simplechat-IG" } ]
+      }
+    },
+    "RouteTablePublic": {
+      "Type"           : "AWS::EC2::RouteTable",
+      "Properties"     : {
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Public-RT" } ]
+      }
+    },
+    "RouteTablePrivate": {
+      "Type"           : "AWS::EC2::RouteTable",
+      "Properties"     : {
+        "VpcId"            : { "Ref": "VPC" },
+        "Tags"             : [ { "Key": "Name", "Value": "Private-RT" } ]
+      }
+    },
+    "gw": {
+      "Type"           : "AWS::EC2::VPCGatewayAttachment",
+      "Properties"     : {
+        "VpcId"             : { "Ref": "VPC" },
+        "InternetGatewayId" : { "Ref": "IGW" }
+      }
+    },
+    "subnetRoutePub1": {
+      "Type"           : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties"     : {
+        "RouteTableId"     : { "Ref": "RouteTablePublic" },
+        "SubnetId"         : { "Ref": "subnetPub1" }
+      }
+    },
+    "subnetRoutePub2": {
+      "Type"           : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties"     : {
+        "RouteTableId"     : { "Ref": "RouteTablePublic" },
+        "SubnetId"         : { "Ref": "subnetPub2" }
+      }
+    },
+    "subnetRoutePrv1": {
+      "Type"           : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties"     : {
+        "RouteTableId"     : { "Ref": "RouteTablePrivate" },
+        "SubnetId"         : { "Ref": "subnetPrv1" }
+      }
+    },
+    "subnetRoutePrv2": {
+      "Type"           : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties"     : {
+        "RouteTableId"     : { "Ref": "RouteTablePrivate" },
+        "SubnetId"         : { "Ref": "subnetPrv2" }
+      }
+    },
+    "routePublic": {
+      "Type"           : "AWS::EC2::Route",
+      "Properties"     : {
+        "DestinationCidrBlock"  : "0.0.0.0/0",
+        "RouteTableId"          : { "Ref": "RouteTablePublic" },
+        "GatewayId"             : { "Ref": "IGW" }
+      },
+      "DependsOn"      : "gw"
+    },
+    "routePrivate": {
+      "Type"           : "AWS::EC2::Route",
+      "Properties"     : {
+        "DestinationCidrBlock"  : "0.0.0.0/0",
+        "RouteTableId"          : { "Ref": "RouteTablePrivate" },
+        "NatGatewayId"          : { "Ref" : "Nat" }
+      },
+      "DependsOn"      : [ "Nat" , "subnetRoutePrv1", "subnetRoutePrv2" ]
+    }
+  }
+}
