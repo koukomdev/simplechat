@@ -9,6 +9,7 @@ gem "rerun"
 gem "mysql2"
 gem 'mysql2-cs-bind'
 gem "rack-flash3"
+gem 'aws-sdk', '~> 3'
 group :test do
   gem "rack-test"
 end

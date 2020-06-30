@@ -68,7 +68,7 @@ class MyApp < Sinatra::Base
     end
     def get_comments
       sql = "
-            SELECT comments.id AS comment_id, image_path, text, users.id AS user_id, users.name AS user_name, DATE_FORMAT(comments.created_at, '%Y/%m/%d %H:%i:%s') AS comment_created_at
+            SELECT comments.id AS comment_id, image_path, text, sentiment, users.id AS user_id, users.name AS user_name, DATE_FORMAT(comments.created_at, '%Y/%m/%d %H:%i:%s') AS comment_created_at
             FROM comments
             INNER JOIN users
             ON comments.user_id = users.id
@@ -115,10 +115,11 @@ class MyApp < Sinatra::Base
         end
       end
       text = params[:text]
+      sentiment = ''
       created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       # Save Contents (DB)
-      sql        = "INSERT INTO comments (user_id, image_path, text, created_at) VALUES (?, ?, ?, ?)"
-      $client.xquery(sql, user_id, db_image_path, text, created_at)
+      sql        = "INSERT INTO comments (user_id, image_path, text, sentiment, created_at) VALUES (?, ?, ?, ?, ?)"
+      $client.xquery(sql, user_id, db_image_path, text, sentiment, created_at)
     rescue
       data = {status: "error", message: "コメントに失敗しました"}
       return json data

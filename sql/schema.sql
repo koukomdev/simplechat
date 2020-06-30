@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
     id         INTEGER      PRIMARY KEY AUTO_INCREMENT,
     user_id    INTEGER      NOT NULL,
     text       TEXT,
+    sentiment  VARCHAR(10),
     image_path VARCHAR(191),
     created_at DATETIME     NOT NULL,
     CONSTRAINT fk_user_id
