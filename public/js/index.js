@@ -20,6 +20,20 @@ $(function () {
       }else{
         contents += this.user_name;
       }
+      switch(this.sentiment) {
+        case 'POSITIVE':
+          contents += ' &#x1f601;';
+          break;
+        case 'NEUTRAL':
+          contents += ' &#x1f611;';
+          break;
+        case 'MIXED':
+          contents += ' &#x1f635;';
+          break;
+        case 'NEGATIVE':
+          contents += ' &#x1f62c;';
+          break;
+      }
       contents += ' <time>' + this.comment_created_at + '</time></p></div></div>';
       $('#chat-content').append(contents);
     });

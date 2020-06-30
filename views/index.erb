@@ -30,7 +30,7 @@
                                 <% if c[:image_path].present? %>
                                   <p><img src="<%= url(c[:image_path]) %>" alt="image"></p>
                                 <% end %>
-                                <p class="meta"><% if session[:user_id] == c[:user_id] then %>自分<% else %><%= h c[:user_name] %><% end %> <time><%= h c[:comment_created_at] %></time></p>
+                                <p class="meta"><% if session[:user_id] == c[:user_id] then %>自分<% else %><%= h c[:user_name] %><% end %><% case c[:sentiment] when 'POSITIVE' %> &#x1f601;<% when 'NEUTRAL' %> &#x1f611;<% when 'MIXED' %> &#x1f635;<% when 'NEGATIVE' %> &#x1f62c;<% end %> <time><%= h c[:comment_created_at] %></time></p>
                             </div>
                         </div>
                     <% end %>

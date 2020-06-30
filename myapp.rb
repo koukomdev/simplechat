@@ -8,6 +8,7 @@ require 'fileutils'
 require 'rack-flash'
 require 'openssl'
 require 'active_support/all'
+require 'aws-sdk'
 
 class MyApp < Sinatra::Base
   configure :development do
@@ -116,6 +117,16 @@ class MyApp < Sinatra::Base
       end
       text = params[:text]
       sentiment = ''
+      if text
+        client = Aws::Comprehend::Client.new(
+          region: 'ap-northeast-1'
+        )
+        resp = client.detect_sentiment({
+          text: text,
+          language_code: 'ja'
+        })
+        sentiment = resp.sentiment
+      end
       created_at = Time.now.strftime("%Y-%m-%d %H:%M:%S")
       # Save Contents (DB)
       sql        = "INSERT INTO comments (user_id, image_path, text, sentiment, created_at) VALUES (?, ?, ?, ?, ?)"
