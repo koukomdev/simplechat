@@ -83,6 +83,10 @@ class MyApp < Sinatra::Base
 
   before do
     $client = db_connect()
+
+    $comp_client ||= Aws::Comprehend::Client.new(
+      region: 'ap-northeast-1'
+    )
   end
 
   get '/' do
@@ -118,10 +122,7 @@ class MyApp < Sinatra::Base
       text = params[:text]
       sentiment = ''
       if text
-        client = Aws::Comprehend::Client.new(
-          region: 'ap-northeast-1'
-        )
-        resp = client.detect_sentiment({
+        resp = $comp_client.detect_sentiment({
           text: text,
           language_code: 'ja'
         })
