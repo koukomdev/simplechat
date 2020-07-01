@@ -82,7 +82,7 @@ class MyApp < Sinatra::Base
   end
 
   before do
-    $client = db_connect()
+    $client ||= db_connect()
 
     $comp_client ||= Aws::Comprehend::Client.new(
       region: 'ap-northeast-1'
