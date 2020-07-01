@@ -81,7 +81,7 @@ class MyApp < Sinatra::Base
   end
 
   before do
-    $client = db_connect()
+    $client ||= db_connect()
   end
 
   get '/' do
