@@ -921,7 +921,6 @@ GEM
     aws-sigv2 (1.0.1)
     aws-sigv4 (1.2.1)
       aws-eventstream (~> 1, >= 1.0.2)
-    backports (3.17.2)
     concurrent-ruby (1.1.6)
     ffi (1.9.25)
     i18n (1.8.3)
@@ -932,16 +931,16 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
     minitest (5.14.1)
-    multi_json (1.14.1)
-    mustermann (1.1.1)
+    multi_json (1.15.0)
+    mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.2)
     mysql2-cs-bind (0.0.6)
       mysql2
-    rack (2.2.3)
+    rack (2.2.4)
     rack-flash3 (1.0.5)
       rack
-    rack-protection (2.0.8)
+    rack-protection (3.0.4)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -950,22 +949,21 @@ GEM
       ffi (>= 0.5.0, < 2)
     rerun (0.13.0)
       listen (~> 3.0)
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.5)
     ruby_dep (1.5.0)
-    sinatra (2.0.8)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.8)
+    sinatra (3.0.4)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.4)
       tilt (~> 2.0)
-    sinatra-contrib (2.0.8)
-      backports (>= 2.8.2)
+    sinatra-contrib (3.0.4)
       multi_json
-      mustermann (~> 1.0)
-      rack-protection (= 2.0.8)
-      sinatra (= 2.0.8)
+      mustermann (~> 3.0)
+      rack-protection (= 3.0.4)
+      sinatra (= 3.0.4)
       tilt (~> 2.0)
     thread_safe (0.3.6)
-    tilt (2.0.10)
+    tilt (2.0.11)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     zeitwerk (2.3.0)
@@ -981,7 +979,7 @@ DEPENDENCIES
   rack-flash3
   rack-test
   rerun
-  sinatra (= 2.0.8)
+  sinatra (= 3.0.4)
   sinatra-contrib
 
 BUNDLED WITH
